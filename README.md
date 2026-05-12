@@ -6,6 +6,6 @@ A comprehensive smart hospital management and telemedicine platform for patient 
 # Steve Buamikusu KALALA
 **Doctrine and Covenants 93:36:** *The glory of God is intelligence, or, in other words, light and truth.*
 
-#Stephen Omondi Owino
+# Stephen Omondi Owino
 **“The Lord loves effort because effort brings rewards that can’t come without it.” — Thomas S. Monson.**
 
