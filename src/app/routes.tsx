@@ -21,6 +21,7 @@ import Payments from "./pages/billing/Payments";
 import SymptomChecker from "./pages/ai/SymptomChecker";
 import Profile from "./pages/profile/Profile";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -32,9 +33,18 @@ export const router = createBrowserRouter([
       { path: "register", Component: Register },
 
       // Dashboards
-      { path: "patient/dashboard", Component: PatientDashboard },
-      { path: "doctor/dashboard", Component: DoctorDashboard },
-      { path: "admin/dashboard", Component: AdminDashboard },
+      { 
+        path: "patient/dashboard", 
+        element: <ProtectedRoute allowedRoles={["patient"]}><PatientDashboard /></ProtectedRoute> 
+      },
+      { 
+        path: "doctor/dashboard", 
+        element: <ProtectedRoute allowedRoles={["doctor"]}><DoctorDashboard /></ProtectedRoute> 
+      },
+      { 
+        path: "admin/dashboard", 
+        element: <ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute> 
+      },
 
       // Appointments
       { path: "appointments/book", Component: BookAppointment },

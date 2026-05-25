@@ -73,3 +73,21 @@ Most UI components are built using **Radix UI** primitives and styled with **Tai
 ## Layout Grid
 - **Container**: `max-w-7xl mx-auto` for main content areas.
 - **Spacing**: Consistent use of Tailwind's spacing scale (e.g., `p-6`, `mb-8`, `gap-4`).
+
+## Dashboards & Role-Based Access Control (RBAC)
+AfyaConnect implements role-specific dashboards to ensure users only access information and tools relevant to their role.
+
+### Role Definitions
+- **Patient**: Focused on self-service, booking, and viewing personal health data.
+- **Doctor**: Focused on clinical management, patient oversight, and issuing prescriptions.
+- **Admin**: Focused on hospital operations and user management.
+
+### Access Control Mechanism
+- **Simulation**: RBAC is simulated via `AuthContext` and `ProtectedRoute` components.
+- **Guards**: Routes are protected at the application level in `routes.tsx`.
+- **Dynamic UI**: Navigation items in `Sidebar.tsx` and actions in `Header.tsx` adjust dynamically based on the active session's role.
+
+### Dashboard Patterns
+- **Tabbed Navigation**: Both dashboards use a tabbed system (`Overview`, `Appointments`, `Records`, `Messages`) to reduce cognitive load.
+- **Quick Stats**: High-level metrics are displayed at the top of every dashboard for immediate situational awareness.
+- **Action Priority**: Primary actions (e.g., "Book Appointment" for patients, "Join Video Call" for doctors) are placed in the header for quick access.

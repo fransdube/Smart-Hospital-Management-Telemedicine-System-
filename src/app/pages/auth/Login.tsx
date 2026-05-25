@@ -1,7 +1,22 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Mail, Lock, LogIn } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleQuickAccess = (role: 'patient' | 'doctor' | 'admin') => {
+    login(role);
+    navigate(`/${role}/dashboard`);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Default to patient for standard login submit in this mock
+    handleQuickAccess('patient');
+  };
+
   return (
     <div className="max-w-md mx-auto mt-12">
       <div className="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
@@ -13,7 +28,7 @@ export default function Login() {
           <p className="text-slate-600 mt-2">Sign in to your AfyaConnect account</p>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               Email Address
@@ -68,26 +83,26 @@ export default function Login() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-slate-200">
-          <p className="text-sm text-slate-600 text-center mb-4">Quick Access</p>
+          <p className="text-sm text-slate-600 text-center mb-4">Quick Access for Demo</p>
           <div className="grid grid-cols-3 gap-3">
-            <Link
-              to="/patient/dashboard"
-              className="px-3 py-2 text-xs text-center bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100"
+            <button
+              onClick={() => handleQuickAccess('patient')}
+              className="px-3 py-2 text-xs text-center bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 font-bold"
             >
               Patient
-            </Link>
-            <Link
-              to="/doctor/dashboard"
-              className="px-3 py-2 text-xs text-center bg-green-50 text-green-700 rounded-lg hover:bg-green-100"
+            </button>
+            <button
+              onClick={() => handleQuickAccess('doctor')}
+              className="px-3 py-2 text-xs text-center bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-bold"
             >
               Doctor
-            </Link>
-            <Link
-              to="/admin/dashboard"
-              className="px-3 py-2 text-xs text-center bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100"
+            </button>
+            <button
+              onClick={() => handleQuickAccess('admin')}
+              className="px-3 py-2 text-xs text-center bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 font-bold"
             >
               Admin
-            </Link>
+            </button>
           </div>
         </div>
       </div>
