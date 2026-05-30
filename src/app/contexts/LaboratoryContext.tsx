@@ -18,9 +18,9 @@ const LaboratoryContext = createContext<LaboratoryContextType | undefined>(undef
 
 export function LaboratoryProvider({ children }: { children: React.ReactNode }) {
   const [tests, setTests] = useState<LabTest[]>([
-    { id: 1, test: "Complete Blood Count (CBC)", date: "May 15, 2026", status: "Completed", result: "Normal" },
-    { id: 2, test: "Lipid Panel", date: "May 12, 2026", status: "Completed", result: "Abnormal" },
-    { id: 3, test: "Urinalysis", date: "May 18, 2026", status: "In Progress", result: "-" },
+    { id: 1, test: "Complete Blood Count (CBC)", date: "May 14, 2026", status: "Completed", result: "Normal" },
+    { id: 2, test: "Lipid Panel", date: "May 11, 2026", status: "Completed", result: "Abnormal" },
+    { id: 3, test: "Urinalysis", date: "May 17, 2026", status: "In Progress", result: "-" },
   ]);
 
   const processTest = (id: number, status: 'Pending' | 'In Progress' | 'Completed', result: string) => {
