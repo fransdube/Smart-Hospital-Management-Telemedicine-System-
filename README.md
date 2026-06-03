@@ -9,3 +9,18 @@ A comprehensive smart hospital management and telemedicine platform for patient 
 # Stephen Omondi Owino
 **“The Lord loves effort because effort brings rewards that can’t come without it.” — Thomas S. Monson.**
 
+
+## Installation
+
+1. Make sure you have [pnpm](https://pnpm.io/) installed.
+2. Install dependencies by running:
+   ```bash
+   pnpm install
+   ```
+
+## Startup
+
+Start the development server by running:
+```bash
+pnpm dev
+```
