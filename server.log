@@ -39,5 +39,4 @@ CREATE TABLE IF NOT EXISTS billing (
         );
 SELECT COUNT(*) as count FROM users
 Database initialized successfully.
-Server is running on port 3000.
-SELECT * FROM users WHERE email = 'john@example.com'
+Server is running on http://0.0.0.0:3000.
