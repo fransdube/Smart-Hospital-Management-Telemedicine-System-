@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Mail, Lock, LogIn } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
@@ -5,16 +6,56 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleQuickAccess = (role: 'patient' | 'doctor' | 'admin') => {
-    login(role);
-    navigate(`/${role}/dashboard`);
+  const handleQuickAccess = async (role: 'patient' | 'doctor' | 'admin') => {
+    // Quick demo login mapping to local DB seeds
+    const emails = {
+      admin: "admin@afyaconnect.com",
+      doctor: "smith@afyaconnect.com",
+      patient: "john@example.com"
+    };
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emails[role], password: "password123" })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        login(data.user.role);
+        navigate(`/${data.user.role}/dashboard`);
+      } else {
+        setError(data.message || "Quick access failed");
+      }
+    } catch (err) {
+      setError("Network error");
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Default to patient for standard login submit in this mock
-    handleQuickAccess('patient');
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        login(data.user.role);
+        navigate(`/${data.user.role}/dashboard`);
+      } else {
+        setError(data.message || "Login failed");
+      }
+    } catch (err) {
+      setError("Network error");
+    }
   };
 
   return (
@@ -28,6 +69,8 @@ export default function Login() {
           <p className="text-slate-600 mt-2">Sign in to your AfyaConnect account</p>
         </div>
 
+        {error && <div className="mb-4 text-red-600 text-center text-sm font-semibold">{error}</div>}
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -38,6 +81,8 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
             </div>
@@ -50,6 +95,8 @@ export default function Login() {
               <input
                 type="password"
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
             </div>
