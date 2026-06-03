@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: Smart-Hospital-Management-Telemedicine-System-
+    env: node
+    region: singapore
+    buildCommand: pnpm install --no-frozen-lockfile; pnpm run build
+    startCommand: npm start
