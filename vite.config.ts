@@ -26,7 +26,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  assetsInclude: ['**/*.svg', '**/*.csv'],
   server: {
+    allowedHosts: ["smart-hospital-management-telemedicine.onrender.com", "localhost"],
+    host: true,
+    strictPort: true,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
@@ -34,13 +39,8 @@ export default defineConfig({
       }
     }
   },
-  assetsInclude: ['**/*.svg', '**/*.csv'],
-  server: {
-    host: true,
-    strictPort: true,
-    port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
-  },
   preview: {
+    allowedHosts: ["smart-hospital-management-telemedicine.onrender.com", "localhost"],
     host: true,
     strictPort: true,
     port: process.env.PORT ? parseInt(process.env.PORT) : 4173,
