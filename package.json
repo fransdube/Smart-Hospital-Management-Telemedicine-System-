@@ -6,9 +6,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "preview": "vite preview"
-    "start": "node server/index.js",
-    "dev": "vite"
+    "preview": "vite preview",
+    "start": "node server/index.js"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
