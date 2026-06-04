@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface Invoice {
   id: number;
@@ -17,19 +17,62 @@ interface BillingContextType {
 const BillingContext = createContext<BillingContextType | undefined>(undefined);
 
 export function BillingProvider({ children }: { children: React.ReactNode }) {
-  const [invoices, setInvoices] = useState<Invoice[]>([
-    { id: 1, service: "Consultation - Dr. Sarah Johnson", amount: 5000, date: "May 15, 2026", status: "Paid" },
-    { id: 2, service: "Blood Test - Complete Panel", amount: 3500, date: "May 12, 2026", status: "Paid" },
-    { id: 3, service: "X-Ray Imaging", amount: 8000, date: "May 10, 2026", status: "Pending" },
-    { id: 4, service: "Medication - Pharmacy", amount: 2500, date: "May 8, 2026", status: "Paid" },
-  ]);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-  const markAsPaid = (id: number) => {
-    setInvoices(prev => prev.map(inv => inv.id === id ? { ...inv, status: 'Paid' } : inv));
+  const fetchInvoices = async () => {
+    try {
+      const res = await fetch('/api/billing');
+      if (res.ok) {
+        const data = await res.json();
+        // Map backend description -> service, and capitalize status
+        const mapped = data.map((inv: any) => ({
+          id: inv.id,
+          service: inv.description,
+          amount: inv.amount,
+          date: inv.date,
+          status: inv.status === 'paid' ? 'Paid' : 'Pending'
+        }));
+        setInvoices(mapped);
+      }
+    } catch (e) {
+      console.error("Failed to fetch invoices", e);
+    }
   };
 
-  const generateBill = (bill: Omit<Invoice, 'id'>) => {
-    setInvoices(prev => [...prev, { ...bill, id: Math.max(0, ...prev.map(i => i.id)) + 1 }]);
+  useEffect(() => {
+    fetchInvoices();
+  }, []);
+
+  const markAsPaid = async (id: number) => {
+    try {
+      const res = await fetch(`/api/billing/${id}/pay`, { method: 'PUT' });
+      if (res.ok) {
+        setInvoices(prev => prev.map(inv => inv.id === id ? { ...inv, status: 'Paid' } : inv));
+      }
+    } catch (e) {
+      console.error("Failed to mark as paid", e);
+    }
+  };
+
+  const generateBill = async (bill: Omit<Invoice, 'id'>) => {
+    try {
+      const res = await fetch('/api/billing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: bill.amount,
+          description: bill.service,
+          status: bill.status.toLowerCase(),
+          date: bill.date
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setInvoices(prev => [...prev, { ...bill, id: data.id }]);
+      }
+    } catch (e) {
+      console.error("Failed to generate bill", e);
+    }
   };
 
   return (

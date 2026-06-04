@@ -11,12 +11,18 @@ const appointmentRoutes = require('./routes/appointments');
 const recordRoutes = require('./routes/records');
 const symptomRoutes = require('./routes/symptoms');
 const telemedicineRoutes = require('./routes/telemedicine');
+const pharmacyRoutes = require('./routes/pharmacy');
+const laboratoryRoutes = require('./routes/laboratory');
+const billingRoutes = require('./routes/billing');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/records', recordRoutes);
 app.use('/api/symptoms', symptomRoutes);
 app.use('/api/telemedicine', telemedicineRoutes);
+app.use('/api/pharmacy', pharmacyRoutes);
+app.use('/api/laboratory', laboratoryRoutes);
+app.use('/api/billing', billingRoutes);
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK' });

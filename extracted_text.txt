@@ -1,0 +1,252 @@
+--- File: Smart Hospital Management  project plan-images-0.jpg ---
+CSE 499 Project Plan
+
+Project Name: AfyaConnect — Smart Hospital Management & Telemedicine System
+
+Requirements:
+
+List your project requirements with accompanying user stories. All the “core” requirements must
+be completed. Optional requirements are features you would like to add if time permits. For each
+requirement list the user stories you will be addressing.
+
+Required
+
+Use this table to document the features of your project. You must have at least 4 requirements.
+Modify the table as needed.
+
+Requirement C/E* Description
+Secure login and registration system for Patients, Doctors, and
+User Administrators.
+Authentication | C e Role-based dashboards for different users
+& Role ¢ Secure authentication and authorization
+Management e User profile management
+User Stories
+
+Name Description
+
+Users create accounts to access healthcare services
+
+Users securely sign in to the system
+Admin manages user accounts and permissions
+Users
+
+Appointment Online appointment scheduling and management system.
+Management ¢ Book appointments with doctors
+e View appointment history
+e Appointment notifications and reminders
+User Stories
+Name Description
+
+Patient schedules appointment with a doctor
+Appointment
+View Doctor views daily appointments
+Schedule
+
+System sends reminders to patients
+Reminder
+
+Electronic Store and manage patient medical records securely.
+Health e Patient health history
+Records (EHR) ¢ Consultation notes
+
+¢ Medical reports and prescriptions
+
+User Stories
+
+
+
+==================================================
+
+--- File: Smart Hospital Management  project plan-images-1.jpg ---
+Name Description
+View Patient views personal medical history
+Records
+
+Doctor updates patient consultation notes
+Records
+
+Admin stores and manages medical reports
+Reports
+
+Telemedicine Online video consultation between doctors and patients.
+System e Video consultation rooms
+e Real-time communication
+¢ Online consultation management
+User Stories
+Name Description
+
+Join Patient joins video consultation
+Consultation
+
+Conduct Doctor performs online consultation
+Consultation
+
+Save Doctor saves notes after consultation
+Consultation
+
+Notes
+
+Confirm Finance staff confirms payments
+Payment
+Al-powered healthcare assistant for symptom analysis and triage.
+e Symptom input
+e Al recommendations
+¢ Triage assistance
+User Stories
+Name Description
+
+Patient enters symptoms into the platform
+Al analyzes symptoms and provides
+recommendations
+Triage System recommends urgency level
+Integration e Appointment fee payment
+
+Al Symptom
+Checker
+
+Pharmacy, c Integrated hospital services connected across departments.
+Laboratory & e Pharmacy prescription workflow
+Billing e Laboratory requests and results
+Integration ¢ Billing and payment management
+User Stories
+Name Description
+Pharmacist dispenses prescribed medicine
+Medication
+Laboratory staff processes patient tests
+Lab Test
+System generates patient invoices
+Bill
+
+
+
+==================================================
+
+--- File: Smart Hospital Management  project plan-images-2.jpg ---
+e Billing payments
+¢ Payment verification
+Name Description
+
+Pay Bills Patient pays healthcare bills using M-Pesa
+
+Verify System confirms successful payments
+Transactions
+
+View Admin views transaction reports
+Payment
+History
+
+*C=Core, E=Enhancement
+
+Project Schedule:
+
+Create a rough project schedule broken down by sprint. For each sprint list the milestones you will
+meet. This is a rough guideline for future planning, you will make a more detailed plan at the first of
+each sprint. You will not be held accountable to this schedule as it will likely change as the class
+progresses.
+
+Sprint Milestone(s)
+
+BEM Project Setup, Database Design, Authentication, Role Management, UI Design
+
+| 2 | Appointment Workflow, Patient Dashboards, Doctor Dashboards, Consultation Flow
+
+GEMM Electronic Health Records, Pharmacy, Laboratory, Billing, Telemedicine Integration
+Al Symptom Checker, M-Pesa Integration, Offline PWA Support, Audit Logs, Testing &
+
+4 | Deployment
+
+Project Architecture
+
+Describe the architecture of your application (For example: web, mobile, client-server, n-tier, etc.).
+
+The application will use a web-based client-server architecture with a modern responsive frontend
+and cloud backend infrastructure.
+
+Architecture Components
+e Frontend: Responsive web application accessible on desktop and mobile devices.
+
+e Backend: RESTful API server handling authentication, appointments, records, and business
+logic.
+
+e Database Layer: Cloud-hosted relational database for secure storage of healthcare
+information.
+
+e Authentication Layer: Secure user authentication with role-based access control.
+e =6Third-Party Integrations: Video conferencing, Al services, and payment gateway.
+
+The system follows a three-tier architecture:
+
+
+==================================================
+
+--- File: Smart Hospital Management  project plan-images-3.jpg ---
+1. Presentation Layer (Frontend Ul)
+2. Application Layer (Backend Services/API)
+
+3. Data Layer (Database & Storage)
+
+Technology
+
+Describe the technology you anticipate using (For example: programming languages, platforms,
+databases, etc.).
+
+The program will be developed using modern cloud-based web technologies.
+Frontend
+
+e React.js
+
+e TypeScript
+
+e HTMLS5
+
+e §=Tailwind CSS
+
+e Vite
+
+Backend & Cloud Services
+
+Supabase
+Node.js
+
+Express.js
+
+Database
+
+Supabase PostgreSQL
+
+APIs & Integrations
+
+Jitsi Meet API for telemedicine
+OpenAl API for Al symptom checker
+Daraja API for payments
+
+Africa’s Talking API for SMS notifications
+
+Security
+
+JWT Authentication
+Supabase MFA (TOTP/SMS)
+
+Role-Based Access Control (RBAC)
+
+
+==================================================
+
+--- File: Smart Hospital Management  project plan-images-4.jpg ---
+e Audit Logging
+Progressive Web App (PWA)
+
+e vite-plugin-pwa
+
+e Offline caching and synchronization
+Development Tools
+
+e Git &GitHub
+
+e VS Code
+Deployment
+
+e Render/Railway (Backend Hosting)
+
+
+==================================================
