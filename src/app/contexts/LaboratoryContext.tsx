@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface LabTest {
   id: number;
@@ -17,18 +17,53 @@ interface LaboratoryContextType {
 const LaboratoryContext = createContext<LaboratoryContextType | undefined>(undefined);
 
 export function LaboratoryProvider({ children }: { children: React.ReactNode }) {
-  const [tests, setTests] = useState<LabTest[]>([
-    { id: 1, test: "Complete Blood Count (CBC)", date: "May 14, 2026", status: "Completed", result: "Normal" },
-    { id: 2, test: "Lipid Panel", date: "May 11, 2026", status: "Completed", result: "Abnormal" },
-    { id: 3, test: "Urinalysis", date: "May 17, 2026", status: "In Progress", result: "-" },
-  ]);
+  const [tests, setTests] = useState<LabTest[]>([]);
 
-  const processTest = (id: number, status: 'Pending' | 'In Progress' | 'Completed', result: string) => {
-    setTests(prev => prev.map(t => t.id === id ? { ...t, status, result } : t));
+  const fetchTests = async () => {
+    try {
+      const res = await fetch('/api/laboratory');
+      if (res.ok) {
+        const data = await res.json();
+        setTests(data);
+      }
+    } catch (e) {
+      console.error("Failed to fetch lab tests", e);
+    }
   };
 
-  const addTest = (test: Omit<LabTest, 'id'>) => {
-    setTests(prev => [...prev, { ...test, id: Math.max(0, ...prev.map(t => t.id)) + 1 }]);
+  useEffect(() => {
+    fetchTests();
+  }, []);
+
+  const processTest = async (id: number, status: 'Pending' | 'In Progress' | 'Completed', result: string) => {
+    try {
+      const res = await fetch(`/api/laboratory/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, result })
+      });
+      if (res.ok) {
+        setTests(prev => prev.map(t => t.id === id ? { ...t, status, result } : t));
+      }
+    } catch (e) {
+      console.error("Failed to process lab test", e);
+    }
+  };
+
+  const addTest = async (test: Omit<LabTest, 'id'>) => {
+    try {
+      const res = await fetch('/api/laboratory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(test)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTests(prev => [...prev, { ...test, id: data.id }]);
+      }
+    } catch (e) {
+      console.error("Failed to add test", e);
+    }
   };
 
   return (
