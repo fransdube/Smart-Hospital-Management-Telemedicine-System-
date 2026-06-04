@@ -26,19 +26,17 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  assetsInclude: ['**/*.svg', '**/*.csv'],
   server: {
+    host: true,
+    strictPort: true,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true
       }
     }
-  },
-  assetsInclude: ['**/*.svg', '**/*.csv'],
-  server: {
-    host: true,
-    strictPort: true,
-    port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
   },
   preview: {
     host: true,
