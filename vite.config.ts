@@ -28,6 +28,7 @@ export default defineConfig({
   },
   assetsInclude: ['**/*.svg', '**/*.csv'],
   server: {
+    allowedHosts: ["smart-hospital-management-telemedicine.onrender.com", "localhost"],
     host: true,
     strictPort: true,
     port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
@@ -39,6 +40,7 @@ export default defineConfig({
     }
   },
   preview: {
+    allowedHosts: ["smart-hospital-management-telemedicine.onrender.com", "localhost"],
     host: true,
     strictPort: true,
     port: process.env.PORT ? parseInt(process.env.PORT) : 4173,
