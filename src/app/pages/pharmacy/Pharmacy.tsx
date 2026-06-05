@@ -1,11 +1,38 @@
+import { useState, useEffect } from "react";
 import { Pill, ShoppingCart, Clock, CheckCircle } from "lucide-react";
 
+interface Prescription {
+  id: number;
+  medication: string;
+  doctor: string;
+  status: string;
+  date: string;
+}
+
 export default function Pharmacy() {
-  const prescriptions = [
-    { id: 1, medication: "Amoxicillin 500mg", doctor: "Dr. Sarah Johnson", status: "Ready for Pickup", date: "May 15, 2026" },
-    { id: 2, medication: "Lisinopril 10mg", doctor: "Dr. Michael Chen", status: "Processing", date: "May 18, 2026" },
-    { id: 3, medication: "Metformin 850mg", doctor: "Dr. Emily Davis", status: "Dispensed", date: "May 10, 2026" },
-  ];
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+
+  useEffect(() => {
+    fetch('/api/pharmacy')
+      .then(res => res.json())
+      .then(data => setPrescriptions(data))
+      .catch(err => console.error("Failed to fetch prescriptions", err));
+  }, []);
+
+  const handleCollect = async (id: number) => {
+    try {
+      const res = await fetch(`/api/pharmacy/${id}/dispense`, { method: 'PUT' });
+      if (res.ok) {
+        setPrescriptions(prev => prev.map(p => p.id === id ? { ...p, status: 'Dispensed' } : p));
+      }
+    } catch (err) {
+      console.error("Failed to dispense prescription", err);
+    }
+  };
+
+  const activeCount = prescriptions.length;
+  const readyCount = prescriptions.filter(p => p.status === 'Ready for Pickup').length;
+  const processingCount = prescriptions.filter(p => p.status === 'Processing').length;
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -20,7 +47,7 @@ export default function Pharmacy() {
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
               <Pill className="w-6 h-6 text-blue-600" />
             </div>
-            <span className="text-2xl font-bold text-slate-900">5</span>
+            <span className="text-2xl font-bold text-slate-900">{activeCount}</span>
           </div>
           <h3 className="text-slate-600 text-sm">Active Prescriptions</h3>
         </div>
@@ -30,7 +57,7 @@ export default function Pharmacy() {
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
-            <span className="text-2xl font-bold text-slate-900">2</span>
+            <span className="text-2xl font-bold text-slate-900">{readyCount}</span>
           </div>
           <h3 className="text-slate-600 text-sm">Ready for Pickup</h3>
         </div>
@@ -40,7 +67,7 @@ export default function Pharmacy() {
             <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
               <Clock className="w-6 h-6 text-orange-600" />
             </div>
-            <span className="text-2xl font-bold text-slate-900">1</span>
+            <span className="text-2xl font-bold text-slate-900">{processingCount}</span>
           </div>
           <h3 className="text-slate-600 text-sm">Processing</h3>
         </div>
@@ -50,7 +77,7 @@ export default function Pharmacy() {
         <h2 className="text-xl font-bold text-slate-900 mb-6">My Prescriptions</h2>
         <div className="space-y-4">
           {prescriptions.map((prescription) => (
-            <div key={prescription.id} className="p-4 bg-slate-50 rounded-lg">
+            <div key={prescription.id} className="p-4 bg-slate-50 rounded-lg border border-slate-100 hover:shadow-sm transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -73,7 +100,10 @@ export default function Pharmacy() {
                     {prescription.status}
                   </span>
                   {prescription.status === "Ready for Pickup" && (
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                    <button
+                      onClick={() => handleCollect(prescription.id)}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                    >
                       Collect Now
                     </button>
                   )}
@@ -81,6 +111,11 @@ export default function Pharmacy() {
               </div>
             </div>
           ))}
+          {prescriptions.length === 0 && (
+            <div className="text-center py-8 text-slate-500">
+              No active prescriptions found.
+            </div>
+          )}
         </div>
       </div>
     </div>
